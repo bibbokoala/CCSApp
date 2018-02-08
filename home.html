@@ -277,9 +277,7 @@
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             var lista_veicoli = xmlhttp.responseText;
             localStorage.setItem("lista_veicoli", lista_veicoli);
-            //Richiesta di Nicoletta, cambiare la label Deposito con Sede
-            //var html = "<center>Deposito di <B>" + nome_deposito + "</B></center><br>";
-            var html = "<center>Sede di <B>" + nome_deposito + "</B></center><br>";
+            var html = "<center>Deposito di <B>" + nome_deposito + "</B></center><br>";
                 html += "<table class='table table-striped' width='100%'>";
                 var arr = JSON.parse(lista_veicoli);
                 for(i = 0; i < arr.length; i++) {
@@ -360,13 +358,6 @@
           html +="</div>"; 
       $( "#result" ).html( html);
       LoadImg(booking_id,'on','Y');
-      /* MODIFICA FUTURA RICHIESTA DA DE STEFANI PER NUOVE SPECIFICHE X TELECOM...
-      $( "#documentHolder" ).click(function() {
-        LoadImg(booking_id,'off','Y');
-        // dopo sessanta secondi ritorno in homepage...
-        setTimeout(function(){ window.location = "home.html"; }, 60000);
-      });
-      */
       //debugLocalStorage();
     });
 
@@ -475,7 +466,7 @@
           </div>
           <div class="alert alert-danger" id="errore-prenotazione-alert">
               <button type="button" class="close" data-dismiss="alert">x</button>
-              Servizio di prenotazione momentaneamente non disponibile!
+              ERRORE la prenotazione NON e' andata a buon fine.
           </div>
           <div class="alert alert-success" id="chiusura-alert">
               <button type="button" class="close" data-dismiss="alert">x</button>
