@@ -196,7 +196,7 @@
 
   function prenota(codice_veicolo, targa){
     console.log("PRENOTA - codice_veicolo: " + codice_veicolo + " - targa: " + targa );
-    //per ora inserito confirm solo per test!
+    //sostituire i CONFIRM con questo: http://bootboxjs.com/examples.html 
     //if (confirm("Vuoi prenotare il veicolo: " + codice_veicolo + " - targato: " + targa + "?")) {
     if (confirm("Vuoi prenotare il veicolo targato: " + targa + "?")) {
       var vehicle_code = codice_veicolo;
@@ -330,6 +330,49 @@
     }
   }
 
+  function chiudiVeicolo(){
+    //alert("chiudiVeicolo");
+    /*chiamata al servizio di ANTONIO http://medley.cloudmup.com/CCSmcv/evt?boxid=000000&timestamp=20180315130909&lat=0.0&lon=0.0&type=release&pnr=1111&rlt=0&crashid=0 
+    */
+    console.log("cliccato bottone: chiudiVeicolo");
+    var booking_id = localStorage.getItem("booking_id");
+    var vehicle_code = localStorage.getItem("vehicle_code");
+    var plate_num = localStorage.getItem("plate_num");
+    //alert("booking_id: " + booking_id);
+    if ( (booking_id==null)||
+         (booking_id.localeCompare("")==0) )
+    {
+      return false;
+    }
+    var url = "http://service.cloudmup.com/GOALocale/CCSAppChiudiVeicolo.php?booking_id="+booking_id+"&vehicle_code="+vehicle_code;
+    if (confirm("Vuoi comunicare la chiusura del veicolo targato: " + plate_num + "?")) {
+      $.ajax({
+        url: url,
+            type: 'POST', // Send post data
+            async: false,
+            success: function(s){
+              call();
+              var result_del = s;
+              console.log(JSON.stringify(result_del));
+              //setTimeout(function(){ window.location = "home.html"; }, 1500);
+              $("#chiusura-veicolo-alert").alert();
+              $("#chiusura-veicolo-alert").fadeTo(2000, 500).slideUp(500, function(){
+                  $("#chiusura-veicolo-alert").alert('close');
+                  window.location = "home.html";
+              });   
+            }
+      });
+    }
+  }
+
+  function changeQRCode(){
+    var booking_id = localStorage.getItem("booking_id");
+    LoadImg(booking_id,'off','Y');
+    var result = $( "#result" ).html();
+    var button ="<button onclick='chiudiVeicolo();' type=button class='btn btn-danger btn-lg bottone' style='margin-bottom:10px;' >VEICOLO CHIUSO</button>";
+    $( "#result" ).html(result + "<br><br>" + button);
+  }
+
   $(document).ready(function() {
     call();
     $("#online-alert").hide();
@@ -337,6 +380,7 @@
     $("#prenotazione-ok-alert").hide();
     $("#errore-prenotazione-alert").hide();
     $("#chiusura-alert").hide();
+    $("#chiusura-veicolo-alert").hide();
     //STA SU INDEX $("#nologin-alert").hide();
 
     $("#btn_inizio_noleggio").click(function(){
@@ -353,7 +397,7 @@
           //html +="<div id='div_qrcode' style='background:#FFFFFF;float:right;text-align:center;padding:10px;'>";
           //html +="<img id='documentHolder' src='' alt=''  width='170px' />";
           html +="<div id='div_qrcode' style='background:#FFFFFF;text-align:center;padding:10px;'>";
-          html +="<img id='documentHolder' src='' alt='' />";
+          html +="<img id='documentHolder' src='' alt='' onclick='changeQRCode();' />";
           html +="</div>";
           html +="</div>"; 
       $( "#result" ).html( html);
@@ -361,7 +405,15 @@
       //debugLocalStorage();
     });
 
-    $("#btn_fine_noleggio, #btn_cancella_noleggio").click(function(){
+
+    //MODIFICA PER RICONSENTIRA IL CANCELLA NOLEGGIO
+    $("#btn_cancella_noleggio").click(function(){
+      //alert("btn_cancella_noleggio");
+        chiusuraNoleggio();
+    });
+
+    //MODIFICA PER RICONSENTIRA IL CANCELLA NOLEGGIO $("#btn_fine_noleggio, #btn_cancella_noleggio").click(function(){
+    $("#btn_fine_noleggio").click(function(){
       var booking_id = localStorage.getItem("booking_id");
       console.log("btn_fine_noleggio - id: " + booking_id);
       window.plugins.insomnia.keepAwake();
@@ -381,8 +433,8 @@
       $( "#result" ).html( html);
       LoadImg(booking_id,'off','Y');
       html = $( "#result" ).html();
-      html += "<br><br>";
-      /* html += "<button onclick='chiusuraNoleggio();' type=button class='btn btn-danger btn-lg bottone' style='margin-bottom:10px;' >Conferma chiusura veicolo</button>"; */
+      //AGGIUNTO BOTTONE VEICOLO CHIUSO 16/03/2018
+      html += "<br><br><button onclick='chiudiVeicolo();' type=button class='btn btn-danger btn-lg bottone' style='margin-bottom:10px;' >VEICOLO CHIUSO</button>";
       $( "#result" ).html( html);
       //debugLocalStorage();
     });
@@ -471,6 +523,10 @@
           <div class="alert alert-success" id="chiusura-alert">
               <button type="button" class="close" data-dismiss="alert">x</button>
               La prenotazione e' stata chiusa con successo.
+          </div>
+          <div class="alert alert-success" id="chiusura-veicolo-alert">
+              <button type="button" class="close" data-dismiss="alert">x</button>
+              Il veicolo e' stata chiuso con successo.
           </div>
           <br>
 <!-- RECUPERARE UNA IMMAGINE LATO SERVER, SALVARLA NEL LOCALSTORAGE E VISUALIZZARLA:
