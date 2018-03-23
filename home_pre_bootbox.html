@@ -197,53 +197,46 @@
 
   function prenota(codice_veicolo, targa){
     console.log("PRENOTA - codice_veicolo: " + codice_veicolo + " - targa: " + targa );
-    bootbox.confirm({
-      message: "Vuoi prenotare il veicolo targato: " + targa + "?",
-      buttons: {
-          confirm: { label: 'SI', className: 'btn-success' },
-          cancel:  { label: 'NO', className: 'btn-danger'  }
-      },
-      callback: function (result) {
-        if(result){              
-          var vehicle_code = codice_veicolo;
-          var utilizzatore = localStorage.getItem("matricola");
-          var url = "http://service.cloudmup.com/GOALocale/CCSAppInsPrenVista.php?utilizzatore="+utilizzatore+"&vehicle_code="+vehicle_code;
-          //DEBUG alert("url: "+ url);
-          $.ajax({
-            url: url,
-            type: 'POST', // Send post data
-            async: false,
-            success: function(s){
-              var result = JSON.stringify(s);
-              //console.log(result.substring(1, result.length-1));
-              //con la substring tolgo le due parentesi quadre ad inizio e fine stringa...
-              var obj = JSON.parse(result.substring(1, result.length-1));
-              console.log("result: " + obj.result + " - id_pren: " + obj.id_pren);
-              //DEBUG alert("result: " + obj.result + " - id_pren: " + obj.id_pren);
-              if (obj.result=='OK'){
-                  call();
-                  //alert("PRENOTAZIONE OK - ID: " + obj.id_pren);  
-                  //setTimeout(function(){ window.location = "home.html"; }, 1000);
-                  $("#prenotazione-ok-alert").alert();
-                  $("#prenotazione-ok-alert").fadeTo(2000, 500).slideUp(500, function(){
-                      $("#prenotazione-ok-alert").alert('close');
-                      window.location = "home.html";
-                  });   
-              }
-              else{
-                  //alert("ERRORE PRENOTAZIONE: " + obj.result);
-                  //setTimeout(function(){ window.location = "home.html"; }, 1000);
-                  $("#errore-prenotazione-alert").alert();
-                  $("#errore-prenotazione-alert").fadeTo(2000, 500).slideUp(500, function(){
-                      $("#errore-prenotazione-alert").alert('close');
-                      window.location = "home.html";
-                  });   
-              }
-            }
-          });  
+    //sostituire i CONFIRM con questo: http://bootboxjs.com/examples.html 
+    //if (confirm("Vuoi prenotare il veicolo: " + codice_veicolo + " - targato: " + targa + "?")) {
+    if (confirm("Vuoi prenotare il veicolo targato: " + targa + "?")) {
+      var vehicle_code = codice_veicolo;
+      var utilizzatore = localStorage.getItem("matricola");
+      var url = "http://service.cloudmup.com/GOALocale/CCSAppInsPrenVista.php?utilizzatore="+utilizzatore+"&vehicle_code="+vehicle_code;
+      //DEBUG alert("url: "+ url);
+      $.ajax({
+        url: url,
+        type: 'POST', // Send post data
+        async: false,
+        success: function(s){
+          var result = JSON.stringify(s);
+          //console.log(result.substring(1, result.length-1));
+          //con la substring tolgo le due parentesi quadre ad inizio e fine stringa...
+          var obj = JSON.parse(result.substring(1, result.length-1));
+          console.log("result: " + obj.result + " - id_pren: " + obj.id_pren);
+          //DEBUG alert("result: " + obj.result + " - id_pren: " + obj.id_pren);
+          if (obj.result=='OK'){
+              call();
+              //alert("PRENOTAZIONE OK - ID: " + obj.id_pren);  
+              //setTimeout(function(){ window.location = "home.html"; }, 1000);
+              $("#prenotazione-ok-alert").alert();
+              $("#prenotazione-ok-alert").fadeTo(2000, 500).slideUp(500, function(){
+                  $("#prenotazione-ok-alert").alert('close');
+                  window.location = "home.html";
+              });   
+          }
+          else{
+              //alert("ERRORE PRENOTAZIONE: " + obj.result);
+              //setTimeout(function(){ window.location = "home.html"; }, 1000);
+              $("#errore-prenotazione-alert").alert();
+              $("#errore-prenotazione-alert").fadeTo(2000, 500).slideUp(500, function(){
+                  $("#errore-prenotazione-alert").alert('close');
+                  window.location = "home.html";
+              });   
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   function getDepot(){
@@ -317,35 +310,25 @@
     {
       return false;
     }
-    bootbox.confirm({
-      message: "Confermi di voler annullare la prenotazione: <b>" + booking_id + "</b> <br> sul veicolo targato: <b>" + plate_num + "</b> ?",
-      buttons: {
-          confirm: { label: 'SI', className: 'btn-success' },
-          cancel:  { label: 'NO', className: 'btn-danger'  }
-      },
-      callback: function (result) {
-        if(result){
-          var url = "http://service.cloudmup.com/GOALocale/CCSAppChiusura.php?booking_id="+booking_id+"&vehicle_code="+vehicle_code;
-          console.log("CHIAMO LA URL: " + url);
-          $.ajax({
-            url: url,
-                type: 'POST', // Send post data
-                async: false,
-                success: function(s){
-                  call();
-                  var result_del = s;
-                  console.log(JSON.stringify(result_del));
-                  //setTimeout(function(){ window.location = "home.html"; }, 1500);
-                  $("#chiusura-alert").alert();
-                  $("#chiusura-alert").fadeTo(2000, 500).slideUp(500, function(){
-                      $("#chiusura-alert").alert('close');
-                      window.location = "home.html";
-                  });   
-                }
-          });
-        }
-      }
-    });
+    var url = "http://service.cloudmup.com/GOALocale/CCSAppChiusura.php?booking_id="+booking_id+"&vehicle_code="+vehicle_code;
+    if (confirm("Vuoi chiudere la prenotazione: " + booking_id + " - sul veicolo targato: " + plate_num + "?")) {
+      $.ajax({
+        url: url,
+            type: 'POST', // Send post data
+            async: false,
+            success: function(s){
+              call();
+              var result_del = s;
+              console.log(JSON.stringify(result_del));
+              //setTimeout(function(){ window.location = "home.html"; }, 1500);
+              $("#chiusura-alert").alert();
+              $("#chiusura-alert").fadeTo(2000, 500).slideUp(500, function(){
+                  $("#chiusura-alert").alert('close');
+                  window.location = "home.html";
+              });   
+            }
+      });
+    }
   }
 
   function chiudiVeicolo(){
@@ -363,16 +346,9 @@
       return false;
     }
     var url = "http://service.cloudmup.com/GOALocale/CCSAppChiudiVeicolo.php?booking_id="+booking_id+"&vehicle_code="+vehicle_code;
-    bootbox.confirm({
-      message: "Confermi di aver chiuso il veicolo targato: " + plate_num + "?",
-      buttons: {
-          confirm: { label: 'SI', className: 'btn-success' },
-          cancel:  { label: 'NO', className: 'btn-danger'  }
-      },
-      callback: function (result) {
-        if(result){      
-          $.ajax({
-            url: url,
+    if (confirm("Vuoi comunicare la chiusura del veicolo targato: " + plate_num + "?")) {
+      $.ajax({
+        url: url,
             type: 'POST', // Send post data
             async: false,
             success: function(s){
@@ -386,30 +362,8 @@
                   window.location = "home.html";
               });   
             }
-          });
-        }
-      }
-    });
-    /*VECCHIO CONFIRM
-    if (confirm("Confermi di aver chiuso il veicolo targato: " + plate_num + "?")) {
-      $.ajax({
-        url: url,
-        type: 'POST', // Send post data
-        async: false,
-        success: function(s){
-          call();
-          var result_del = s;
-          console.log(JSON.stringify(result_del));
-          //setTimeout(function(){ window.location = "home.html"; }, 1500);
-          $("#chiusura-veicolo-alert").alert();
-          $("#chiusura-veicolo-alert").fadeTo(2000, 500).slideUp(500, function(){
-              $("#chiusura-veicolo-alert").alert('close');
-              window.location = "home.html";
-          });   
-        }
       });
     }
-    */
   }
 
   function changeQRCode(){
@@ -519,21 +473,12 @@
     });
 
     $("#btn_logout").click(function(){
-      bootbox.confirm({
-        message: "effettuare il Log-out?",
-        buttons: {
-            confirm: { label: 'SI', className: 'btn-success' },
-            cancel:  { label: 'NO', className: 'btn-danger'  }
-        },
-        callback: function (result) {
-          if(result){
-            localStorage.clear();
-            console.log("btn_logout: "+localStorage.getItem("login"));
-            window.location.href = 'index.html';
-          }
-        }
-      });
-
+      //alert("btn_logout");
+      if (confirm("effettuare il Log-out?")) {
+        localStorage.clear();
+        console.log("btn_logout: "+localStorage.getItem("login"));
+        window.location.href = 'index.html';
+      }
     });
 
   });  

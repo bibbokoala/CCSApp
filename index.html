@@ -138,6 +138,18 @@ $.fn.serializeObject = function()
   }   
 
   $(document).ready(function() {
+
+    //VERIFICO IL SISTEMA
+    var deviceType = (navigator.userAgent.match(/iPad/i)) == "iPad" ? "IOS" : 
+                     (navigator.userAgent.match(/iPhone/i)) == "iPhone" ? "IOS" : 
+                     (navigator.userAgent.match(/Android/i)) == "Android" ? "ANDROID" : 
+                     (navigator.userAgent.match(/BlackBerry/i)) == "BlackBerry" ? "BlackBerry" : "PC";
+    if (deviceType=="IOS"){
+       console.log("deviceType: " + deviceType + " - userAgent: " + navigator.userAgent);
+       //NASCONDO IL BOTTONE btn_exit PER I DISPOSITI IOS
+       $("#btn_exit").hide();
+    }
+
     $("#online-alert").hide();
     $("#offline-alert").hide();
     $("#nologin-alert").hide();
