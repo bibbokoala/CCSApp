@@ -201,12 +201,13 @@
       message: "Vuoi prenotare il veicolo targato: <b>" + targa + "</b> ?",
       buttons: {
           confirm: { label: '<i class="fa fa-check"></i> SI', className: 'btn-success btn-lg prenota_confirm' },
-          cancel:  { label: '<i class="fa fa-times"></i> NO', className: 'btn-danger btn-lg pull-left' }
+          cancel:  { label: '<i class="fa fa-times"></i> NO', className: 'btn-danger btn-lg pull-left prenota_cancel' }
       },
       callback: function (result) {
         if(result){
           //DISABILITO IL TASTO SI DELLA PRENOTAZIONE PER EVITARE CHE VENGA CLICCATO PIU' VOLTE!!!
           $('.prenota_confirm').prop('disabled', true);
+          $('.prenota_cancel').prop('disabled', true);
           var vehicle_code = codice_veicolo;
           var utilizzatore = localStorage.getItem("matricola");
           var url = "http://service.cloudmup.com/GOALocale/CCSAppInsPrenVista.php?utilizzatore="+utilizzatore+"&vehicle_code="+vehicle_code;
