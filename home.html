@@ -222,6 +222,8 @@
               //con la substring tolgo le due parentesi quadre ad inizio e fine stringa...
               var obj = JSON.parse(result.substring(1, result.length-1));
               console.log("result: " + obj.result + " - id_pren: " + obj.id_pren);
+              //DISABILITO I BOTTONI NOLEGGIA FINO A QUANDO NON HO FINITO L'ANIMAZIONE DEGLI ALERT X IL RISULTATO DELLA PRENOTAZIONE
+              $('.noleggia').prop('disabled', true);
               //DEBUG alert("result: " + obj.result + " - id_pren: " + obj.id_pren);
               if (obj.result=='OK'){
                   call();
@@ -295,7 +297,7 @@
                     console.log(i + ") vehicle_code: " + arr[i].vehicle_code + " - plate_num: " + arr[i].plate_num );
                     html += "<tr><td align=center><b style='font-size: 150%;'>" + arr[i].plate_num + "</b></td>";
                     html += "<td align=center>";
-                    html += "<button id='btn_prenota' class='btn btn-primary btn-lg' onclick=\"prenota('"+arr[i].vehicle_code+"','"+arr[i].plate_num+"');\" >";
+                    html += "<button id='btn_prenota' class='btn btn-primary btn-lg noleggia' onclick=\"prenota('"+arr[i].vehicle_code+"','"+arr[i].plate_num+"');\" >";
                     html += "Noleggia</button>";
                     html += "</td></tr>";
                 }
