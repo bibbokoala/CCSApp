@@ -198,13 +198,15 @@
   function prenota(codice_veicolo, targa){
     console.log("PRENOTA - codice_veicolo: " + codice_veicolo + " - targa: " + targa );
     bootbox.confirm({
-      message: "Vuoi prenotare il veicolo targato: " + targa + "?",
+      message: "Vuoi prenotare il veicolo targato: <b>" + targa + "</b> ?",
       buttons: {
-          confirm: { label: 'SI', className: 'btn-success' },
-          cancel:  { label: 'NO', className: 'btn-danger'  }
+          confirm: { label: '<i class="fa fa-check"></i> SI', className: 'btn-success btn-lg prenota_confirm' },
+          cancel:  { label: '<i class="fa fa-times"></i> NO', className: 'btn-danger btn-lg pull-left' }
       },
       callback: function (result) {
-        if(result){              
+        if(result){
+          //DISABILITO IL TASTO SI DELLA PRENOTAZIONE PER EVITARE CHE VENGA CLICCATO PIU' VOLTE!!!
+          $('.prenota_confirm').prop('disabled', true);
           var vehicle_code = codice_veicolo;
           var utilizzatore = localStorage.getItem("matricola");
           var url = "http://service.cloudmup.com/GOALocale/CCSAppInsPrenVista.php?utilizzatore="+utilizzatore+"&vehicle_code="+vehicle_code;
@@ -285,14 +287,14 @@
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             var lista_veicoli = xmlhttp.responseText;
             localStorage.setItem("lista_veicoli", lista_veicoli);
-            var html = "<center>Deposito di <B>" + nome_deposito + "</B></center><br>";
+            var html = "<center>Sede di <B>" + nome_deposito + "</B></center><br>";
                 html += "<table class='table table-striped' width='100%'>";
                 var arr = JSON.parse(lista_veicoli);
                 for(i = 0; i < arr.length; i++) {
                     console.log(i + ") vehicle_code: " + arr[i].vehicle_code + " - plate_num: " + arr[i].plate_num );
-                    html += "<tr><td align=center><B>" + arr[i].plate_num + "</B></td>";
+                    html += "<tr><td align=center><b style='font-size: 150%;'>" + arr[i].plate_num + "</b></td>";
                     html += "<td align=center>";
-                    html += "<button id='btn_prenota' class='btn btn-primary' onclick=\"prenota('"+arr[i].vehicle_code+"','"+arr[i].plate_num+"');\" >";
+                    html += "<button id='btn_prenota' class='btn btn-primary btn-lg' onclick=\"prenota('"+arr[i].vehicle_code+"','"+arr[i].plate_num+"');\" >";
                     html += "Noleggia</button>";
                     html += "</td></tr>";
                 }
@@ -320,8 +322,8 @@
     bootbox.confirm({
       message: "Confermi di voler annullare la prenotazione: <b>" + booking_id + "</b> <br> sul veicolo targato: <b>" + plate_num + "</b> ?",
       buttons: {
-          confirm: { label: 'SI', className: 'btn-success' },
-          cancel:  { label: 'NO', className: 'btn-danger'  }
+          confirm: { label: '<i class="fa fa-check"></i> SI', className: 'btn-success btn-lg' },
+          cancel:  { label: '<i class="fa fa-times"></i> NO', className: 'btn-danger btn-lg pull-left'  }
       },
       callback: function (result) {
         if(result){
@@ -366,8 +368,8 @@
     bootbox.confirm({
       message: "Confermi di aver chiuso il veicolo targato: " + plate_num + "?",
       buttons: {
-          confirm: { label: 'SI', className: 'btn-success' },
-          cancel:  { label: 'NO', className: 'btn-danger'  }
+          confirm: { label: '<i class="fa fa-check"></i> SI', className: 'btn-success btn-lg' },
+          cancel:  { label: '<i class="fa fa-times"></i> NO', className: 'btn-danger btn-lg pull-left'  }
       },
       callback: function (result) {
         if(result){      
@@ -416,7 +418,10 @@
     var booking_id = localStorage.getItem("booking_id");
     LoadImg(booking_id,'off','Y');
     var result = $( "#result" ).html();
-    var button ="<button onclick='chiudiVeicolo();' type=button class='btn btn-danger btn-lg bottone' style='margin-bottom:10px;' >VEICOLO CHIUSO</button>";
+    var button = "";
+    if (!result.includes("chiudiVeicolo")){
+      button ="<button onclick='chiudiVeicolo();' type=button class='btn btn-danger btn-lg bottone' style='margin-bottom:10px;' >VEICOLO CHIUSO</button>"; 
+    }
     $( "#result" ).html(result + "<br><br>" + button);
   }
 
@@ -522,8 +527,8 @@
       bootbox.confirm({
         message: "effettuare il Log-out?",
         buttons: {
-            confirm: { label: 'SI', className: 'btn-success' },
-            cancel:  { label: 'NO', className: 'btn-danger'  }
+            confirm: { label: '<i class="fa fa-check"></i> SI', className: 'btn-success btn-lg' },
+            cancel:  { label: '<i class="fa fa-times"></i> NO', className: 'btn-danger btn-lg pull-left'  }
         },
         callback: function (result) {
           if(result){
