@@ -1,0 +1,48 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<!-- CSS FOR TOGGLE LEFT MENU -->
+<link href='http://fonts.googleapis.com/css?family=Exo+2:400,600,300,900' rel='stylesheet' type='text/css'>
+<link href="css/navbar-static-top.css" rel="stylesheet">
+<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+<!-- END CSS FOR TOGGLE LEFT MENU -->
+<link href="css/custom.css" rel="stylesheet">
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootbox.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+
+$(document).ready(function() {
+	$('#img-load').hide();
+});
+
+function prova(){
+	//DEBUG alert("function prova");
+    bootbox.confirm({
+        message: "Vuoi prenotare?",
+        buttons: {
+            confirm: { label: '<i class="fa fa-check"></i> SI', className: 'btn-success btn-lg' },
+             cancel: { label: '<i class="fa fa-times"></i> NO', className: 'btn-danger btn-lg pull-left'  }
+        },
+        callback: function (result) {
+        	//$('#img-load').show();
+        	//<i class="fa fa-spin fa-spinner"> 
+            //console.log('This was logged in the callback: ' + result);
+            setTimeout(function(){ console.log('This was logged in the callback: ' + result); }, 3000);
+        }
+    });
+}
+
+</script>
+</head>
+<body>
+   <div id="img-load">
+      <img src="pics/loading_android.gif" />
+   </div>
+<p>
+<button type="button" class="btn btn-primary" data-bb-example-key="confirm-options" onclick='prova();' >Run example</button>
+</p>
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -204,12 +204,15 @@
           cancel:  { label: '<i class="fa fa-times"></i> NO', className: 'btn-danger btn-lg pull-left prenota_cancel' }
       },
       callback: function (result) {
+        //DISABILITO IL TASTO SI DELLA PRENOTAZIONE PER EVITARE CHE VENGA CLICCATO PIU' VOLTE!!!
+        $('.prenota_confirm').prop('disabled', true);
+        $('.prenota_cancel').prop('disabled', true);
+        call();
         if(result){
-          //DISABILITO IL TASTO SI DELLA PRENOTAZIONE PER EVITARE CHE VENGA CLICCATO PIU' VOLTE!!!
-          $('.prenota_confirm').prop('disabled', true);
-          $('.prenota_cancel').prop('disabled', true);
           var vehicle_code = codice_veicolo;
           var utilizzatore = localStorage.getItem("matricola");
+          var html = "<center><b>Attendere il risultato della prenotazione</b><br><img src='pics/loading_android.gif' /></center>";
+          $( "#result" ).html( html);
           var url = "http://service.cloudmup.com/GOALocale/CCSAppInsPrenVista.php?utilizzatore="+utilizzatore+"&vehicle_code="+vehicle_code;
           //DEBUG alert("url: "+ url);
           $.ajax({
@@ -246,7 +249,8 @@
               }
             }
           });  
-        }
+        }   // if on result
+        // window.location = "home.html";
       }
     });
   }
@@ -325,11 +329,16 @@
     bootbox.confirm({
       message: "Confermi di voler annullare la prenotazione: <b>" + booking_id + "</b> <br> sul veicolo targato: <b>" + plate_num + "</b> ?",
       buttons: {
-          confirm: { label: '<i class="fa fa-check"></i> SI', className: 'btn-success btn-lg' },
-          cancel:  { label: '<i class="fa fa-times"></i> NO', className: 'btn-danger btn-lg pull-left'  }
+          confirm: { label: '<i class="fa fa-check"></i> SI', className: 'btn-success btn-lg prenota_confirm' },
+          cancel:  { label: '<i class="fa fa-times"></i> NO', className: 'btn-danger btn-lg pull-left prenota_cancel'  }
       },
       callback: function (result) {
+        //DISABILITO IL TASTO SI DELLA PRENOTAZIONE PER EVITARE CHE VENGA CLICCATO PIU' VOLTE!!!
+        $('.prenota_confirm').prop('disabled', true);
+        $('.prenota_cancel').prop('disabled', true);
         if(result){
+          var html = "<center><b>Attendere il risultato della cancellazione prenotazione</b><br><img src='pics/loading_android.gif' /></center>";
+          $( "#result" ).html( html);
           var url = "http://service.cloudmup.com/GOALocale/CCSAppChiusura.php?booking_id="+booking_id+"&vehicle_code="+vehicle_code;
           console.log("CHIAMO LA URL: " + url);
           $.ajax({
@@ -371,11 +380,16 @@
     bootbox.confirm({
       message: "Confermi di aver chiuso il veicolo targato: " + plate_num + "?",
       buttons: {
-          confirm: { label: '<i class="fa fa-check"></i> SI', className: 'btn-success btn-lg' },
-          cancel:  { label: '<i class="fa fa-times"></i> NO', className: 'btn-danger btn-lg pull-left'  }
+          confirm: { label: '<i class="fa fa-check"></i> SI', className: 'btn-success btn-lg prenota_confirm' },
+          cancel:  { label: '<i class="fa fa-times"></i> NO', className: 'btn-danger btn-lg pull-left prenota_cancel'  }
       },
       callback: function (result) {
+        //DISABILITO IL TASTO SI DELLA PRENOTAZIONE PER EVITARE CHE VENGA CLICCATO PIU' VOLTE!!!
+        $('.prenota_confirm').prop('disabled', true);
+        $('.prenota_cancel').prop('disabled', true);
         if(result){      
+          var html = "<center><b>Attendere il risultato della chiusura veicolo</b><br><img src='pics/loading_android.gif' /></center>";
+          $( "#result" ).html( html);
           $.ajax({
             url: url,
             type: 'POST', // Send post data
