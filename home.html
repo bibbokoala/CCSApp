@@ -207,7 +207,7 @@
         //DISABILITO IL TASTO SI DELLA PRENOTAZIONE PER EVITARE CHE VENGA CLICCATO PIU' VOLTE!!!
         $('.prenota_confirm').prop('disabled', true);
         $('.prenota_cancel').prop('disabled', true);
-        call();
+        // non so se qui serve: call();
         if(result){
           var vehicle_code = codice_veicolo;
           var utilizzatore = localStorage.getItem("matricola");
