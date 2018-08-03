@@ -183,6 +183,8 @@
         matricola="test";
     var random = Math.random();
     var xmlhttp = new XMLHttpRequest();
+        alert("MATRICOLA: [" + localStorage.getItem("matricola") + "]");
+        alert("PASSWORD: [" + localStorage.getItem("password") + "]");
     var url="http://service.cloudmup.com/GOALocale/CCSAppQuery.php?matricola="+matricola+"&random="+random;
     console.log("url:"+url);
     xmlhttp.onreadystatechange=function() {
