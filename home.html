@@ -190,7 +190,7 @@
     xmlhttp.onreadystatechange = function (oEvent) {  
         if (xmlhttp.readyState === 4) {  
             if (xmlhttp.status === 200) {  
-               alert("Success", xmlhttp.statusText);  
+               //DEBUG alert("Success", xmlhttp.statusText);  
                var lista = xmlhttp.responseText;
                localStorage.setItem("lista", lista);
                navigator.splashscreen.hide();
