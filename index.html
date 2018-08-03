@@ -156,13 +156,13 @@ $.fn.serializeObject = function()
 
     //IN CASO DI LOGIN VALIDO NON RIEFFETTUO IL LOGIN...
     if (localStorage.getItem("auth") != null) {
-      alert("AUTH: [" + localStorage.getItem("auth") + "]");
+      //alert("AUTH: [" + localStorage.getItem("auth") + "]");
       var auth=localStorage.getItem("auth");
       if (auth.localeCompare("OK")==0)
       {
         localStorage.setItem("link", "poi");
         //window.location = "ric_elemento.html";
-        alert("MATRICOLA: [" + localStorage.getItem("matricola") + "]");
+        //alert("MATRICOLA: [" + localStorage.getItem("matricola") + "]");
         //alert("PASSWORD: [" + localStorage.getItem("password") + "]");
         window.location = "home.html";
       }
