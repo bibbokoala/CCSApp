@@ -193,6 +193,7 @@
                alert("Success", xmlhttp.statusText);  
                var lista = xmlhttp.responseText;
                localStorage.setItem("lista", lista);
+               navigator.splashscreen.hide();
             } else {  
                alert("Error", xmlhttp.statusText);  
             }  
