@@ -190,12 +190,14 @@
     xmlhttp.onreadystatechange = function (oEvent) {  
         if (xmlhttp.readyState === 4) {  
             if (xmlhttp.status === 200) {  
+               alert("Success", xmlhttp.statusText);  
                var lista = xmlhttp.responseText;
                localStorage.setItem("lista", lista);
             } else {  
                alert("Error", xmlhttp.statusText);  
             }  
         }  
+        alert("xmlhttp.readyState: ", xmlhttp.readyState);  
     }; 
     /* vecchia chiamata
     xmlhttp.onreadystatechange=function() {
