@@ -183,8 +183,8 @@
         matricola="test";
     var random = Math.random();
     var xmlhttp = new XMLHttpRequest();
-        alert("MATRICOLA: [" + localStorage.getItem("matricola") + "]");
-        alert("PASSWORD: [" + localStorage.getItem("password") + "]");
+        alert("call - MATRICOLA: [" + localStorage.getItem("matricola") + "]");
+        //alert("PASSWORD: [" + localStorage.getItem("password") + "]");
     var url="http://service.cloudmup.com/GOALocale/CCSAppQuery.php?matricola="+matricola+"&random="+random;
     console.log("url:"+url);
     xmlhttp.onreadystatechange=function() {
@@ -261,6 +261,7 @@
     var matricola = localStorage.getItem("matricola");
     var random = Math.random();
     var xmlhttp = new XMLHttpRequest();
+    alert("getDepot - MATRICOLA: [" + localStorage.getItem("matricola") + "]");
     var url="http://service.cloudmup.com/GOALocale/CCSAppGetDepot.php?matricola="+matricola+"&random="+random;
     console.log("url:"+url);
     xmlhttp.onreadystatechange=function() {
@@ -290,6 +291,7 @@
     }
     var random = Math.random();
     var xmlhttp = new XMLHttpRequest();
+    alert("getVehicles - DEPOSITO: [" + localStorage.getItem("deposito") + "]");
     var url="http://service.cloudmup.com/GOALocale/CCSAppGetVehicles.php?id_depot="+deposito+"&random="+random;
     console.log("url:"+url);
     xmlhttp.onreadystatechange=function() {
