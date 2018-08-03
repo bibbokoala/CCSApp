@@ -187,12 +187,24 @@
         //alert("PASSWORD: [" + localStorage.getItem("password") + "]");
     var url="http://service.cloudmup.com/GOALocale/CCSAppQuery.php?matricola="+matricola+"&random="+random;
     console.log("url:"+url);
+    xmlhttp.onreadystatechange = function (oEvent) {  
+        if (xmlhttp.readyState === 4) {  
+            if (xmlhttp.status === 200) {  
+               var lista = xmlhttp.responseText;
+               localStorage.setItem("lista", lista);
+            } else {  
+               alert("Error", xmlhttp.statusText);  
+            }  
+        }  
+    }; 
+    /* vecchia chiamata
     xmlhttp.onreadystatechange=function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             var lista = xmlhttp.responseText;
             localStorage.setItem("lista", lista);
         }
     }
+    */
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
   }
